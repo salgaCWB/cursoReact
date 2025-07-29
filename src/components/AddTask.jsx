@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Input from "./Input";
+import TextArea from "./TextArea";
 
 function AddTask({ onAddTaskClick }) {
   const [title, setTitle] = useState("");
@@ -9,19 +11,17 @@ function AddTask({ onAddTaskClick }) {
         Adicionar Tarefa
       </h2>
       <form className="space-y-2">
-        <input
+        <Input
           type="text"
-          placeholder="Título da Tarefa"
-          className="w-full p-2 rounded-md border border-slate-300"
+          placeholder="Informe o Título da Tarefa"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
         />
-        <textarea
-          placeholder="Descrição da Tarefa"
-          className="w-full p-2 rounded-md border border-slate-300"
+        <TextArea
+          placeholder="Digite aqui a descrição da Tarefa"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
-        ></textarea>
+        />
         <button
           type="button"
           onClick={() => {

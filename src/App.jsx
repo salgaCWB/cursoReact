@@ -1,28 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddTask from "./components/AddTask";
 import Tasks from "./components/Tasks";
 
 function App() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Estudar Programação",
-      description: "Estudar Programação para se tornar um DEV full Stack",
-      isCompleted: false,
-    },
-    {
-      id: 2,
-      title: "Estudar Inglês",
-      description: "Estudar Inglês p[ara se tornar fluente",
-      isCompleted: false,
-    },
-    {
-      id: 3,
-      title: "Estudar Matematica",
-      description: "Estudar Matemática para se tornar bom em cálculo",
-      isCompleted: false,
-    },
-  ]);
+  const [tasks, setTasks] = useState(
+    JSON.parse(localStorage.getItem("tasks")) || []
+  );
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  // O useEffect com array vazio roda apenas uma vez, quando o componente é montado
+  // Isso é útil para inicializar dados ou fazer chamadas de API
+  // Aqui, vamos chamar uma API para buscar as tarefas e armazená-las no estado
+  useEffect(() => {
+    async function fetchTasks() {
+      // Simulando uma chamada de API
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/todos?_limit=10",
+        { method: "GET" }
+      ); //chama API e busca 10 registros ?_limit=10
+      const data = await response.json();
+      setTasks(data);
+    }
+    // a linha abaixo chama a function que conecta na API pra buscar as tarefas
+    //fetchTasks();
+  }, []);
+
   function onAddTaskClick(title, description) {
     const newTask = {
       id: tasks.length + 2,
